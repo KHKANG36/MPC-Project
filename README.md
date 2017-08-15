@@ -30,14 +30,25 @@ Once the install for uWebSocketIO is complete, the main program can be built and
 5. ./mpc
 
 ## About the Project 
-MPC algorithm implementation is as below: 
-1) Set the prediction variables: N(number of prediction) and dt(time duration for prediction).
-2) Fit the polynomial to the waypoints (Trajectory waypoints).
-3) Calculate initial cross track error(CTE) and orientation error values.
-4) Define the components of the cost function (state, actuators, etc). 
-5) Define the model constraints. 
-6) Update parameters of actuators(throttle and steering),which are minimizing the value of cost function
+1) The vehicle model 
+- I used kinetic model 
+optimizer to find the control inputs and minimize the cost function 
+define the duration of trajectory, (T, N, dt)
+define the vehicle model and constraints . vehicle model predict next positioin of 
+x, y, psi, v, cte, error of psi, limitation - actuator limitation 
+define the cost function 
 
+pass current state -> model predictive controller -> optimization solver called -> return a vector of control inputs that minimize
+the cost function 
+this control input aplllied to the vehicle and repreat the loop 
+2) Latency 
+A contributing factor to latency is actuator dynamics. For example the time elapsed between when you command a steering angle to when that angle is actually achieved. This could easily be modeled by a simple dynamic system and incorporated into the vehicle model. One approach would be running a simulation using the vehicle model starting from the current state for the duration of the latency. The resulting state from the simulation is the new initial state for MPC.
+
+
+
+
+I set 20, 0.05 total 50km/h (=13.8m/sec) So, 1-sec front expectation 
+too much is increect. T is sould large, dt should small should be T is a couple of sec too low dt compext 
 The tricky part in this project was 1)the weight of the steering difference cost. Without the weight, the change rate of steering is too high. So, I multiplied it by 1,000 weight, and the movement was smoother. 2) Latency handling. Since there was 100milisec delay between the input and response of actuator. To handle this, I initially apply the 100 milisec delay to next prediction state.   
 
 ## Discussion/Issues 
