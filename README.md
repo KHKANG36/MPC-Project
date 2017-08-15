@@ -37,7 +37,8 @@ MPC algorithm implementation is as below:
 4) Define the components of the cost function (state, actuators, etc). 
 5) Define the model constraints. 
 6) Update parameters of actuators(throttle and steering),which are minimizing the value of cost function
-The tricky part in here is 1)the weight of the sterring difference cost. Without the weight, the change rate of steering is too high. So, I multiplied it by 1,000 weight, and the movement was smoother. 2) Latency handling. Since there was 100milisec delay between the input and response of actuator. To handle this, I initially apply the 100 milisec delay to next prediction state. 
+
+The tricky part in this project was 1)the weight of the sterring difference cost. Without the weight, the change rate of steering is too high. So, I multiplied it by 1,000 weight, and the movement was smoother. 2) Latency handling. Since there was 100milisec delay between the input and response of actuator. To handle this, I initially apply the 100 milisec delay to next prediction state. 
 
 ## Discussion/Issues 
 The vehicle in simulator drives pretty well up to about 50Km/h. Over the 50Km/h speed, however, the prediction is getting unstable, and the vehicle sometimes way off the road. I've tuned several parameters (such as weight, N, dt), but didn't get perfect solution. This would be future works to resolve in this project.  
