@@ -31,7 +31,10 @@ Once the install for uWebSocketIO is complete, the main program can be built and
 
 ## About the Project 
 1) The vehicle model 
-- I used kinetic model 
+- I used kinematic model. Ignore the tire forces, gravity, mass, and reduces the accuracy of the model. But at low and moderate speeds,
+kinematic model approximate the actual vehicle dynamics 
+2) State vector
+- x,y,psi,v,cte, error of psi  
 optimizer to find the control inputs and minimize the cost function 
 define the duration of trajectory, (T, N, dt)
 define the vehicle model and constraints . vehicle model predict next positioin of 
