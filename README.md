@@ -34,7 +34,11 @@ Once the install for uWebSocketIO is complete, the main program can be built and
 - I used kinematic model. Ignore the tire forces, gravity, mass, and reduces the accuracy of the model. But at low and moderate speeds,
 kinematic model approximate the actual vehicle dynamics 
 2) State vector
-- x,y,psi,v,cte, error of psi  
+- x,y,psi,v, and actuator delta, a (brake + accel) 
+3) actual trajectory and reference trajectory minimize 
+how? predict the vehicle actual path and adjusting the control input to minimize the difference between 
+that projection and reference trajectory 
+
 optimizer to find the control inputs and minimize the cost function 
 define the duration of trajectory, (T, N, dt)
 define the vehicle model and constraints . vehicle model predict next positioin of 
