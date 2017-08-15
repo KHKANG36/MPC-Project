@@ -27,7 +27,7 @@ Once the install for uWebSocketIO is complete, the main program can be built and
 2. cd build
 3. cmake ..
 4. make
-5. ./pid
+5. ./mpc
 
 ## About the Project 
 MPC algorithm implementation is as below: 
