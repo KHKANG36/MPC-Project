@@ -31,10 +31,11 @@ Once the install for uWebSocketIO is complete, the main program can be built and
 
 ## About the Project 
 1) The vehicle model 
-- I used kinematic model. Ignore the tire forces, gravity, mass, and reduces the accuracy of the model. But at low and moderate speeds,
-kinematic model approximate the actual vehicle dynamics 
-2) State vector
-- x,y,psi,v, and actuator delta, a (brake + accel) 
+- I used kinematic model. In this project, I ignored the tire forces, gravity, vehicle mass to simplify the model. Even though it reduces the accuracy of the model, it approximated well the actual vehicle dynamics at moderate speeds in simulator.
+2) State vector and actuator
+- I used 4 state vector and 2 actuators, which are x position, y postion, the angle between x-axis and vehicle's heading direction, vehicle speed, steering actuatror and throttle(brake+accel) actuator for each. This 4 state vectors and 2 actuators well approximate the vehicle's behavior in Kinematic model. Steering and throttle actuators can cover almost 90% of the vehicle's movement. (In reality, there will be other actuators such as tranmission(Gear)). I updated the 4 state with the fomulas as below:
+x(t+1) = x(t) + v(t)*cos(psi(t))* dt : next  
+
 3) actual trajectory and reference trajectory minimize 
 how? predict the vehicle actual path and adjusting the control input to minimize the difference between 
 that projection and reference trajectory 
