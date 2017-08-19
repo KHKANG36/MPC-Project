@@ -32,9 +32,12 @@ Once the install for uWebSocketIO is complete, the main program can be built and
 ## About the Project 
 1) The vehicle model 
 - I used kinematic model. In this project, I ignored the tire forces, gravity, vehicle mass to simplify the model. Even though it reduces the accuracy of the model, it approximated well the actual vehicle dynamics at moderate speeds in simulator.
+
 2) State vector and actuator
-- I used 4 state vector and 2 actuators, which are x position, y postion, the angle between x-axis and vehicle's heading direction, vehicle speed, steering actuatror and throttle(brake+accel) actuator for each. This 4 state vectors and 2 actuators well approximate the vehicle's behavior in Kinematic model. Steering and throttle actuators can cover almost 90% of the vehicle's movement. (In reality, there will be other actuators such as tranmission(Gear)). I updated the 4 state with the fomulas as below:
-x(t+1) = x(t) + v(t)*cos(psi(t))* dt : next  
+- I used 4 state vector and 2 actuators, which are x position, y postion, the angle between x-axis and vehicle's heading direction, vehicle speed, steering actuatror and throttle(brake+accel) actuator for each. This 4 state vectors and 2 actuators well approximate the vehicle's behavior in Kinematic model. Steering and throttle actuators can cover almost 90% of the vehicle's movement. (In reality, there will be other actuators such as tranmission(Gear)). I updated the 4 state with the fomulas as follows; (1) x(t+1) = x(t) + v(t)*cos(psi(t))* dt (2) y(t+1) = y(t) + v(t)*sin(psi(t))* dt (3) psi(t+1) = psi(t) + (v(t)/Lf) * delta * dt (4) v(t+1) = v(t) + a(t) * dt. Lf means the distance between the front of the vehicle and its center of gravity, it influences the degree of vehicle's turning angle. Delta stands for the steering angle.   
+
+3) T(Total prediction time), N(Timestep length) and dt (elapsed duration between tiemstep) Value
+ - Generally speaking, Large number of T and small number of dt is good. However, if T is too large, the prediction is not accurate because the vehicle environment is changed a lot within a few second. Let's assume that vehicle's average speed is 50Km/h, which means that the vehicle moves 13.8m/sec. I think that 13.8m is really long distance to predict, and I assumed T should not be longer than 1 second. In addition, if dt is too small, it requires too much computational power. So, with the trial and error approach, I found the 0.05 was the optimal value for dt. When dt is larger than 0.05, the accuracy of steering angle was relatively low, which make the sway of the vehicle. Obviously, N is 20. (0.05 second * 20 = 1 second)
 
 3) actual trajectory and reference trajectory minimize 
 how? predict the vehicle actual path and adjusting the control input to minimize the difference between 
