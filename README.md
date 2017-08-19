@@ -1,4 +1,3 @@
-
 ## MPC project for vehicle dynamics 
 This is a project for Udacity Self-Driving Car Nanodegree program. In this project, I implemented a MPC(Model Predictive Control) S/W code for autonomous vehicle control. All codes are written with C++ and tested on the Udacity simulator. 
 
@@ -46,7 +45,7 @@ Once the install for uWebSocketIO is complete, the main program can be built and
 Therefore, we have to rotate the each coordinate as much as the vehicle's current psi angle. There is famous point transform formula. I just used the formula for coordiate rotation. Because the direction of rotation is clockwise, I used the minus sign for the psi angle. After getting the global waypoint coordinates from the simulator (ptsx, ptxy in code), calculate the difference between them and global vehicle coordinate (px,py in code). Then, I rotate it with aforementioned rotation technique, to get the vehicle's coordinate.  
 
 5) Latency handling
- - 100ms latency was given in this project. It means that the time elapsed between when I command a steering angle to when that angle is actually achieved. Therefore, I calculated and transfered the predicted state after 100ms to the simulator as the new initial state. In other words, the time when actual command is achieved (after 100ms) should be the initial state. By replacing the "dt" to "delay(0.1second)" in state prediction fomulas, I could handle it easily. In addition, x(t),y(t),psi(t) value should be all zeros after coordinate conversion because the coordinate will be 0 point, 0 point, 0 angle at the vehicle's view point.  
+ - 100ms latency was given in this project. It means that the time elapsed between when I command a steering angle to when that angle is actually achieved. Therefore, I transmitted the predicted state "after 100ms" to the simulator as the new initial state. In other words, the vehicle's state when actual command is achieved should be the initial state. By replacing the "dt" to "delay(0.1second)" in state prediction formulas, I could handle it easily. In addition, x(t),y(t) and psi(t) value should be all zeros when I calculate predicted state after 100ms because the coordinate will be 0 point, 0 point, 0 angle at the vehicle's view point (after coordinate conversion).  
 
 ## Discussion/Issues 
 The vehicle in simulator drives pretty well up to about 50Km/h. Over the 50Km/h speed, however, the prediction is getting unstable, and the vehicle sometimes way off the road. I've tuned several parameters (such as weight, N, dt), but didn't get perfect solution. This would be future works to resolve in this project.  
