@@ -41,32 +41,13 @@ Once the install for uWebSocketIO is complete, the main program can be built and
  - Generally speaking, Large number of T and small number of dt is good. However, if T is too large, the prediction is not accurate because the vehicle environment is changed a lot within a few second. Let's assume that vehicle's average speed is 50Km/h, which means that the vehicle moves 13.8m/sec. I think that 13.8m is really long distance to predict, and I assumed T should not be longer than 1 second. In addition, if dt is too small, it requires too much computational power. So, with the trial and error approach, I found the 0.05 was the optimal value for dt. When dt is larger than 0.05, the accuracy of steering angle was relatively low, which make the sway of the vehicle. Obviously, N is 20. (0.05 second * 20 = 1 second)
  
 4) Coordinate conversion 
- - In this project, the standard of global coordinate (coming from the simulator) and vehicle coordinate was different. While global coordinate uses the traditional X,Y coordinate, the vehicle's heading direction should be always parallel with X-axis at the vehicle coordinate. Please refer to below image:  
+ - I used the third order polynomial for the waypoints fitted to waypoints to get coefficients. Third order polynomial is enough to represent the waypoints to get coefficient. In this project, the standard of global coordinate (coming from the simulator) and vehicle coordinate was different. While global coordinate uses the traditional X,Y coordinate, the vehicle's heading direction should be always parallel with X-axis at the vehicle coordinate. Please refer to below image:  
 ![Test image](https://github.com/KHKANG36/MPC-Project/blob/master/coord.png)
 Therefore, we have to rotate the each coordinate as much as the vehicle's psi angle. There is famous point transform fomula. I just used the fomula for coordiate rotation. Because the direction of rotation is clockwise, I used the minus sign for the psi angle.  
+After the global waypoint coordinate from the simulator (ptsx, ptxy in code), calculate the difference between the coordinate and global vehicle coordinate (px,py in code). Then, I rotate it with aforementioned rotation technique, to get the vehicle's coordinate.  
 
-3) actual trajectory and reference trajectory minimize 
-how? predict the vehicle actual path and adjusting the control input to minimize the difference between 
-that projection and reference trajectory 
-
-optimizer to find the control inputs and minimize the cost function 
-define the duration of trajectory, (T, N, dt)
-define the vehicle model and constraints . vehicle model predict next positioin of 
-x, y, psi, v, cte, error of psi, limitation - actuator limitation 
-define the cost function 
-
-pass current state -> model predictive controller -> optimization solver called -> return a vector of control inputs that minimize
-the cost function 
-this control input aplllied to the vehicle and repreat the loop 
-2) Latency 
-A contributing factor to latency is actuator dynamics. For example the time elapsed between when you command a steering angle to when that angle is actually achieved. This could easily be modeled by a simple dynamic system and incorporated into the vehicle model. One approach would be running a simulation using the vehicle model starting from the current state for the duration of the latency. The resulting state from the simulation is the new initial state for MPC.
-
-
-
-
-I set 20, 0.05 total 50km/h (=13.8m/sec) So, 1-sec front expectation 
-too much is increect. T is sould large, dt should small should be T is a couple of sec too low dt compext 
-The tricky part in this project was 1)the weight of the steering difference cost. Without the weight, the change rate of steering is too high. So, I multiplied it by 1,000 weight, and the movement was smoother. 2) Latency handling. Since there was 100milisec delay between the input and response of actuator. To handle this, I initially apply the 100 milisec delay to next prediction state.   
+5) Latency handling
+There is 100ms latency in this project. It means that the time elapsed between when you command a steering angle to when that angle is actually achieved. Therefore, I calculated and transfered the predicted state after 100ms to the simulator as the new initial state. In other words, the time when actual command is achieved (after 100ms) should be the initial state. By replacing the "dt" to "delay(0.1second)" in state prediction fomulas, I could handle it easily. In addition, x(t),y(t),psi(t) value should be all zeros after coordinate conversion because the coordinate will be 0 point, 0 point, 0 angle at the vehicle's view point.  
 
 ## Discussion/Issues 
 The vehicle in simulator drives pretty well up to about 50Km/h. Over the 50Km/h speed, however, the prediction is getting unstable, and the vehicle sometimes way off the road. I've tuned several parameters (such as weight, N, dt), but didn't get perfect solution. This would be future works to resolve in this project.  
