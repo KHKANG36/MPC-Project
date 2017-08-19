@@ -1,3 +1,4 @@
+
 ## MPC project for vehicle dynamics 
 This is a project for Udacity Self-Driving Car Nanodegree program. In this project, I implemented a MPC(Model Predictive Control) S/W code for autonomous vehicle control. All codes are written with C++ and tested on the Udacity simulator. 
 
@@ -38,6 +39,11 @@ Once the install for uWebSocketIO is complete, the main program can be built and
 
 3) T(Total prediction time), N(Timestep length) and dt (elapsed duration between tiemstep) Value
  - Generally speaking, Large number of T and small number of dt is good. However, if T is too large, the prediction is not accurate because the vehicle environment is changed a lot within a few second. Let's assume that vehicle's average speed is 50Km/h, which means that the vehicle moves 13.8m/sec. I think that 13.8m is really long distance to predict, and I assumed T should not be longer than 1 second. In addition, if dt is too small, it requires too much computational power. So, with the trial and error approach, I found the 0.05 was the optimal value for dt. When dt is larger than 0.05, the accuracy of steering angle was relatively low, which make the sway of the vehicle. Obviously, N is 20. (0.05 second * 20 = 1 second)
+ 
+4) Coordinate conversion 
+ - In this project, the standard of global coordinate (coming from the simulator) and vehicle coordinate was different. While global coordinate uses the traditional X,Y coordinate, the vehicle's heading direction should be always parallel with X-axis at the vehicle coordinate. Please refer to below image:  
+![Test image](https://github.com/KHKANG36/MPC-Project/blob/master/coord.png)
+Therefore, we have to rotate the each coordinate as much as the vehicle's psi angle. There is famous point transform fomula. I just used the fomula for coordiate rotation. Because the direction of rotation is clockwise, I used the minus sign for the psi angle.  
 
 3) actual trajectory and reference trajectory minimize 
 how? predict the vehicle actual path and adjusting the control input to minimize the difference between 
